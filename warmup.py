@@ -8,7 +8,7 @@ WINDOW_WIDTH = 400
 WINDOW_HEIGHT = 500
 X_SPEED = 3
 Y_SPEED = 4
-main_window = pygame.display.set_mode((400, 500), 32, 0)
+main_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 32, 0)
 pygame.display.set_caption("Animation")
 
 BLUE = (0, 0, 255)
@@ -16,10 +16,11 @@ GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 WIDTH = 25
 HEIGHT = 25
-
+group = pygame.sprite.Group()
 my_block = block.Block(main_window, WIDTH, HEIGHT, BLUE)
 new_block = block.Block(main_window, WIDTH, HEIGHT, GREEN)
-
+group.add(my_block)
+group.add(new_block)
 # starting position of the block. Upper left corner of the screen
 my_block.rect.x = 10
 my_block.rect.y = 10
@@ -34,10 +35,12 @@ while True:
             sys.exit()
     
     main_window.fill(WHITE)
-    my_block.move()
-    new_block.move()
-    main_window.blit(new_block.image, new_block.rect)
-    main_window.blit(my_block.image, my_block.rect)
+    for a_brick in group:
+        a_brick.move()
+        group.remove(a_brick)
+        a_brick.collide(group)
+        group.add(a_brick)
+        main_window.blit(a_brick.image, a_brick.rect)
     pygame.display.update()
 
 
