@@ -1,9 +1,10 @@
 import pygame
 
 
-class Block:
+class Block(pygame.sprite.Sprite):
 
     def __init__(self, screen, width, height, color):
+        super().__init__()
         self.screen = screen
         self.width = width
         self.height = height
@@ -25,3 +26,11 @@ class Block:
             self.x_speed = -self.x_speed
         if self.rect.top <= 0 or self.rect.bottom >= screen_height:
             self.y_speed = -self.y_speed
+
+    def collide(self, block_group):
+        if pygame.sprite.spritecollide(self, block_group, False):
+            self.x_speed = -self.x_speed
+            self.y_speed = -self.x_speed
+        else:
+            pass
+
